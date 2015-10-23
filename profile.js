@@ -1,3 +1,4 @@
+var https = require('https'); 
 var http = require('http'); 
 var printer = require('./printer'); 
 
@@ -5,7 +6,8 @@ var printer = require('./printer');
 function get(username) {  
 	//wrap all sections within functions to make them importable
 	//Connect to the API URL (http://teamtreehouse.com/username.json)
-	var request = http.get("http://teamtreehouse.com/" + username + ".json", function (response) {
+	//Seems the protocol for json serving has switched from http to https
+	var request = https.get("https://teamtreehouse.com/" + username + ".json", function (response) {
 		var body = ''; 
 		response.on('data', function(chunk) {  	
 		// response is a stream of packets callback fcn is called when a chunk is ready to be worked on
@@ -28,10 +30,8 @@ function get(username) {
 			}
 		})
 	})
-
 	//Connection Error
 	request.on('error', printer.printError); 
-	//Note that the function is named here, without parameter, as that would invoke. But function definition has parameter which will be passed when the callback function is invoked.
 }; 
 
 exports.get = get; 
